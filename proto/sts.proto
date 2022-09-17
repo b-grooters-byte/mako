@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package sts;
+
+service STS {
+    rpc GetToken (TokenRequest) returns(TokenResponse);
+}
+
+message TokenRequest {
+   int32 duration  = 1;
+}
+
+message  TokenResponse{
+    int32 duration = 1;
+    string token = 2;
+}
