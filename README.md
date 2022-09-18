@@ -1,7 +1,16 @@
 # mako
  
+Mako is a safe, secure, performant STS for distributed microservices. An STS is necessary when you want to secure your microservices with JWT's. This is typically a part of a zero trust network environment and is used in conjuction with mTLS. 
 
-Make is a safe, secure, performant STS for distributed microservices.
+There are several different JWT workflows that mako supports and these are outlined in the following sections.
+
+The Manning Press book, ["Microservices Security IN ACTION"],(https://www.manning.com/books/microservices-security-in-action) does an excellent job of providing a detailed overview of the different JWT use cases if you are unfamiliar with them.
+
+# Building
+
+Mako STS uses [gRPC](https://grpc.io/) and requires the [Protocol Buffer compiler](https://github.com/protocolbuffers/protobuf#protocol-compiler-installation) for building.
+
+Please follow the instructions for the [Protocol Compiler](https://github.com/protocolbuffers/protobuf#protocol-compiler-installation) installation, adding the location of protoc to your path prior to building mako.
 
 
 # STS Workflows
