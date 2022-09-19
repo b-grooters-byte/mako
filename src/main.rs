@@ -1,6 +1,7 @@
+mod jwt;
+
 use clap::Parser;
 use jsonwebtoken::{Header, Algorithm, EncodingKey, encode};
-use serde::{Serialize, Deserialize};
 
 
 #[derive(Parser)]
@@ -11,19 +12,9 @@ pub struct Config {
     audience: Option<String>
 }
 
-#[derive(Debug, Serialize, Deserialize)]
-pub struct Claims {
-    aud: Option<String>,
-    exp: usize,
-
-}
-
 fn main() {
-
-
     let config = Config::parse();
-
-    let claims = Claims {
+    let claims = jwt::Claims {
         aud: config.audience,
         exp: 0,
 
