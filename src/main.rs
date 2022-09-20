@@ -14,11 +14,7 @@ pub struct Config {
 
 fn main() {
     let config = Config::parse();
-    let claims = jwt::Claims {
-        aud: config.audience,
-        exp: 0,
-
-    };
+    let claims = jwt::Claims::new();
     let mut header = Header::new(Algorithm::HS512);
     header.kid = Some("762c640e-d333-4fc3-a95e-f74370124621".to_owned());
     let result = encode(&header, 

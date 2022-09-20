@@ -13,7 +13,6 @@ use sts::sts_server::StsServer;
 
 
 const DEFAULT_LISTEN_PORT: u16 = 0xB47E;
-const DEFAULT_DURATION: u32 = 15 * 60 * 1000;
 const DEFAULT_AUDIENCE: &'static str = "internal_service";
 
 #[derive(Debug, Parser)]
@@ -37,11 +36,7 @@ struct TokenService {
 #[tonic::async_trait]
 impl Sts for TokenService {
     async fn get_token( &self, request: Request<TokenRequest> ,) ->  Result<Response<TokenResponse>, Status> {
-        let claims = jwt::Claims {
-            aud: Some(DEFAULT_AUDIENCE.to_owned()),
-            exp: 0,
-    
-        };
+        let claims = jwt::Claims::new();
         let mut header = Header::new(Algorithm::HS512);
         header.kid = Some("762c640e-d333-4fc3-a95e-f74370124621".to_owned());
         let result = encode(&header, 
@@ -57,7 +52,7 @@ async fn main() -> Result<(), Box<dyn  std::error::Error>> {
 
     let config = Config::parse();
 
-    let addr = "[::1]:20010".parse()?;
+    let addr = ("[::1]:".to_string()+&(DEFAULT_LISTEN_PORT.to_string())).parse()?;
     let token_service = TokenService{config};
 
     Server::builder()
