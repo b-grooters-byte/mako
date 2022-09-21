@@ -41,8 +41,13 @@ impl Sts for TokenService {
         header.kid = Some("762c640e-d333-4fc3-a95e-f74370124621".to_owned());
         let result = encode(&header, 
             &claims, &EncodingKey::from_secret("test secret - must replace".as_bytes()));
-        let response = TokenResponse{ duration: request.into_inner().duration, token: "A Token".to_string() };
-        Ok(Response::new(response))
+        match result {
+            Ok(token) => {
+                let response = TokenResponse{ duration: request.into_inner().duration, token };
+                Ok(Response::new(response))    
+            }
+            _=> Err(Status::internal("unable to create token"))
+        }
     }
 }
 
