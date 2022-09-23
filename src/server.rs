@@ -26,6 +26,9 @@ struct Config {
     /// the listen port for gRPC connections
     #[clap(short, long, default_value_t = DEFAULT_LISTEN_PORT)]
     listen_port: u16,
+    /// certificate file location for STS JWT signing cert
+    #[clap(short, long)]
+    cert_file: String,
 }
 
 #[derive(Debug)]
@@ -57,6 +60,8 @@ async fn main() -> Result<(), Box<dyn  std::error::Error>> {
 
     let config = Config::parse();
 
+    let cert = load_cert(&config.cert_file)?;
+
     let addr = ("[::1]:".to_string()+&(DEFAULT_LISTEN_PORT.to_string())).parse()?;
     let token_service = TokenService{config};
 
@@ -66,4 +71,8 @@ async fn main() -> Result<(), Box<dyn  std::error::Error>> {
         .await?;
 
     Ok(())
+}
+
+fn load_cert(_cert_file: &str) -> Result<(), Box<dyn std::error::Error>>{
+    todo!()
 }
