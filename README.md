@@ -12,6 +12,11 @@ Mako STS uses [gRPC](https://grpc.io/) and requires the [Protocol Buffer compile
 
 Please follow the instructions for the [Protocol Compiler](https://github.com/protocolbuffers/protobuf#protocol-compiler-installation) installation, adding the location of protoc to your path prior to building mako.
 
+The STS uses the openssl wrappers for Rust. These require that the openssl headers and binaries are available. Perl is required to build openssl locally.
+
+## Tools for Windows openssl Builds
+* [vcpkg](https://vcpkg.io/en/getting-started.html) (not required for source builds)
+* [Strawberry Perl for Windows](https://strawberryperl.com/)
 
 # STS Workflows
 

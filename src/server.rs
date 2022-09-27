@@ -4,6 +4,8 @@ pub mod sts {
 
 mod jwt;
 
+use std::fs;
+
 use clap::Parser;
 use tonic::{transport::Server, Request, Response, Status};
 use sts::{sts_server::Sts, TokenRequest, TokenResponse};
@@ -73,6 +75,16 @@ async fn main() -> Result<(), Box<dyn  std::error::Error>> {
     Ok(())
 }
 
-fn load_cert(_cert_file: &str) -> Result<(), Box<dyn std::error::Error>>{
-    todo!()
+fn load_cert(cert_file: &str) -> Result<(), Box<dyn std::error::Error>>{
+    let path = std::path::Path::new(cert_file);
+    let _cert = match fs::read(path) {
+        Ok(vec_bytes) => {
+            match openssl::x509::X509::from_pem(&vec_bytes) {
+                Ok(cert) => Some(cert),
+                _ => None
+            }
+        }
+        _ => None
+    };
+    Ok(())
 }

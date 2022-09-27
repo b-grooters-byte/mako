@@ -13,6 +13,7 @@ clap = { version ="3.2", features = ["derive"] }
 tonic = "0.8.1"
 prost = "0.11"
 tokio = { version = "1.0", features = ["macros", "rt-multi-thread"] }
+openssl = { version = "0.10", features = ["vendored"] }
 
 # server binary
 [[bin]]
