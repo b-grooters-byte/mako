@@ -4,7 +4,7 @@ pub mod sts {
 
 mod jwt;
 
-use std::fs;
+use std::{fs, error::Error};
 
 use clap::Parser;
 use tonic::{transport::Server, Request, Response, Status};
@@ -35,7 +35,8 @@ struct Config {
 
 #[derive(Debug)]
 struct TokenService {
-    config: Config
+    config: Config,
+    cert: openssl::x509::X509,
 }
 
 #[tonic::async_trait]
@@ -75,16 +76,56 @@ async fn main() -> Result<(), Box<dyn  std::error::Error>> {
     Ok(())
 }
 
-fn load_cert(cert_file: &str) -> Result<(), Box<dyn std::error::Error>>{
+fn load_cert(cert_file: &str) -> Result<openssl::x509::X509, Box<dyn std::error::Error>>{
     let path = std::path::Path::new(cert_file);
-    let _cert = match fs::read(path) {
+    let mut x509_cert: Option<openssl::x509::X509> = None;
+
+    match fs::read(path) {
         Ok(vec_bytes) => {
             match openssl::x509::X509::from_pem(&vec_bytes) {
-                Ok(cert) => Some(cert),
-                _ => None
+                Ok(cert) => x509_cert = Some(cert),
+                Err(e) => return Err(Box::new(e)),
             }
         }
-        _ => None
+        Err(e) =>  {
+            println!("unable to read file");
+            return Err(Box::new(e));
+        }
     };
+    Ok(x509_cert.unwrap())
+}
+
+
+fn load_private_key(key_path: &str) -> Result<(), Box<dyn std::error::Error>> {
+    match fs::read(key_path) {
+        Ok(pem) => {
+            match openssl::pkey::PKey::private_key_from_pem(&pem) {
+                Ok(priv_key) => {
+
+                }
+                Err(e) => {
+
+                }
+            }
+
+        }
+        Err(e) => {
+
+        }
+    }
     Ok(())
+}
+
+
+#[cfg(test)]
+mod test {
+
+    use super::*;
+
+    #[test]
+    fn test_load_cert() {
+        let cert_file = "test/server.test.crt";
+        let result = load_cert(cert_file);
+        assert!(result.is_ok());
+    }
 }
