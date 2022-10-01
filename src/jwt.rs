@@ -1,6 +1,6 @@
-use std::time::{Duration, Instant, SystemTime};
+use std::time::{Duration, SystemTime};
 
-use serde::{Serialize, Deserialize};
+use serde::{Deserialize, Serialize};
 
 const DEFAULT_DURATION: u64 = 15 * 60;
 
@@ -13,9 +13,11 @@ pub struct Claims {
 
 impl Claims {
     pub fn new() -> Self {
-        let now = SystemTime::now().duration_since(SystemTime::UNIX_EPOCH).unwrap();
+        let now = SystemTime::now()
+            .duration_since(SystemTime::UNIX_EPOCH)
+            .unwrap();
         let expiration = now + Duration::new(DEFAULT_DURATION, 0);
-            
+
         Claims {
             aud: None,
             exp: expiration.as_secs(),

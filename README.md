@@ -18,6 +18,12 @@ The STS uses the openssl wrappers for Rust. These require that the openssl heade
 * [vcpkg](https://vcpkg.io/en/getting-started.html) (not required for source builds)
 * [Strawberry Perl for Windows](https://strawberryperl.com/)
 
+# Testing
+
+The test path may include test certificates and private keys generated for unit test purposes. These are self signed certificates that should never be used in production environments.
+
+
+
 # STS Workflows
 
 ## User Context
